@@ -10,9 +10,9 @@ import socket
 ser = serial.Serial(
     port='/dev/ttyAMA0',
     baudrate=9600,
-    parity=serial.PARITY_ODD,
-    stopbits=serial.STOPBITS_TWO,
-    bytesize=serial.SEVENBITS
+#    parity=serial.PARITY_ODD,
+#    stopbits=serial.STOPBITS_TWO,
+#    bytesize=serial.SEVENBITS
 )
 
 
