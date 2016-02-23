@@ -28,6 +28,7 @@ void setup()
 void loop() // run over and over
 {
   sCmd.readSerial();
+  
   if (piSerial.available())
     Serial.write(piSerial.read());
   if (Serial.available())
@@ -37,6 +38,7 @@ void loop() // run over and over
 
 void arm_rotation()    
 {
+  char *arg;
   int en; //enable
   int dir; //direction
 
@@ -48,7 +50,7 @@ void arm_rotation()
     Serial.println(en); 
     
     piSerial.print("Enable: "); 
-    piSerial.print(aNumber); 
+    piSerial.print(en); 
   }
   arg = sCmd.next(); 
   if (arg != NULL) 
@@ -58,6 +60,7 @@ void arm_rotation()
     Serial.print(dir); 
     
     piSerial.print("Direction "); 
-    piSerial.println(aNumber); 
+    piSerial.println(dir); 
   }
 }
+

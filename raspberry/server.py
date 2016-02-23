@@ -51,3 +51,4 @@ try:
 except KeyboardInterrupt:
     server.close()
     ser.close()
+    print 'Bye'
