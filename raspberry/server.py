@@ -7,16 +7,25 @@ import serial
 import asyncore
 import socket
 
+ser = serial.Serial(
+    port='/dev/ttyAMA0',
+    baudrate=9600,
+    parity=serial.PARITY_ODD,
+    stopbits=serial.STOPBITS_TWO,
+    bytesize=serial.SEVENBITS
+)
 
-class EchoHandler(asyncore.dispatcher_with_send):
+
+class CommandForwarder(asyncore.dispatcher_with_send):
 
     def handle_read(self):
         data = self.recv(8192)
         if data:
             self.send(data)
+            ser.write(data)
 
 
-class EchoServer(asyncore.dispatcher):
+class CommandServer(asyncore.dispatcher):
 
     def __init__(self, host, port):
         asyncore.dispatcher.__init__(self)
@@ -30,7 +39,15 @@ class EchoServer(asyncore.dispatcher):
         if pair is not None:
             sock, addr = pair
             print 'Incoming connection from %s' % repr(addr)
-            handler = EchoHandler(sock)
+            handler = CommandForwarder(sock)
 
-server = EchoServer('0.0.0.0', 5555)
-asyncore.loop()
+server = CommandServer('0.0.0.0', 5555)
+
+ser.open()
+
+try:
+    asyncore.loop()
+
+except KeyboardInterrupt:
+    server.close()
+    ser.close()
